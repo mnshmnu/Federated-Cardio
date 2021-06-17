@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>M.A.R.S.</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icons/favicon.ico') }}"/>
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Vendor CSS Files -->
+  <link href="{{ url_for('static', filename='vendor/animate-css/animate.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{{ url_for('static', filename='css/style.css')}}" rel="stylesheet">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+  <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+  <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+  <script type=text/javascript src="{{ url_for('static', filename='js/script.js')}}"></script>
+
+  <script>
+
+  </script>
+
+  <!-- =======================================================
+  * Template Name: Medilab - v4.1.0
+  * Template URL: https://bootstrapmade.com/medilab-free-medical-bootstrap-theme/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex align-items-center">
+    <div class="container">
+      <h1>M.A.R.S.</h1>
+      <h2>Medical Analysis collaboRative System</h2>
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+    <!-- ======= Why Us Section ======= -->
+    <section id="why-us" class="why-us">
+      <div class="container">
+        <div>
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              {% for message in messages %}
+                <p>{{ message }}</p>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+        </div>
+        
+
+
+        <div class="col-lg-12 ">
+          <div class="icon-boxes d-flex flex-column justify-content-center">
+            <div class="row">
+              <div class="col-lg-4 ">
+                <div class="icon-box mt-4 mt-xl-0">
+                  <div class="alert alert-warning" role="alert"><b>Please Make sure to connect an Electrnoic Stethoscope to verify the accuracy!</b></div>
+                  <input type="checkbox" id="toggle" class="tooltip" checked data-toggle="toggle" data-on="Lung" data-off="Heart"
+                  onchange="getData()"><br><br>
+                  <button id="recordButton" class="btn btn-secondary custom">Analyse</button>
+                  <button id="pauseButton" class="btn btn-secondary custom" disabled>Pause</button>
+                  <button id="stopButton" class="btn btn-secondary custom" disabled>Stop</button><br><br>
+                  <div id="formats"><strong>Recordings:</strong></div>
+                  <ol id="recordingsList"></ol>
+                </div>
+              </div>
+
+              {% if pred %}
+              <div class="col-lg-8 ">
+                <div class="icon-box mt-4 mt-xl-0">
+                  <form class="content" action="{{ url_for('db_insert') }}" method="POST"
+                    style="padding-top: 20px; padding-bottom: 20px;">
+
+                    <b class="mb2">Diagnosis:</b><br>
+                    <b class="mb2">Disease Class:</b>&nbsp;<input class="mb2" type="text" style="width: 80px;"
+                      placeholder="Disease Label" value="{{ pred[0] }}" name="disease_label">
+                    <b class="mb2">Classifier Confidence:</b>&nbsp;<input class="mb2" style="width: 40px;" type="text"
+                      placeholder="Confidence" value="{{ pred[1] }}"><br>
+
+                    <input name="pname" type="text" placeholder="Name" class="mb2">
+                    <select name="gender" aria-placeholder="Gender" class="mb2">
+                      <option value="female">Female</option>
+                      <option value="male">Male</option>
+                      <option value="other">Transgender</option>
+                    </select>
+                    <input name="age" type="number" placeholder="Age" class="mb2"><br>
+
+                    <!--Table starts-->
+                    <table name="myTable" id="myTable" style="margin: auto;">
+                      <tbody>
+                        <tr>
+                          <th>Medication</th>
+                          <th>Amount (mg)</th>
+                          <th>Frequency</th>
+                        </tr>
+                        <tr>
+                          <td><input name="medname1" type="text"></td>
+                          <td><input name="amt1" type="number"></td>
+                          <td>
+                            <select name="freq1">
+                              <option value="1">1-0-0</option>
+                              <option value="1">0-1-0</option>
+                              <option value="1">0-0-1</option>
+                              <option value="2">1-0-1</option>
+                              <option value="2">1-1-0</option>
+                              <option value="2">0-1-1</option>
+                              <option value="3">1-1-1</option>
+                            </select>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>Medication</th>
+                          <th>Amount (mg)</th>
+                          <th>Frequency</th>
+                        </tr>
+                        <tr>
+                          <td><input name="medname2" type="text"></td>
+                          <td><input name="amt2" type="number"></td>
+                          <td>
+                            <select name="freq2">
+                              <option value="1">1-0-0</option>
+                              <option value="1">0-1-0</option>
+                              <option value="1">0-0-1</option>
+                              <option value="2">1-0-1</option>
+                              <option value="2">1-1-0</option>
+                              <option value="2">0-1-1</option>
+                              <option value="3">1-1-1</option>
+                            </select>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <!--Table ends-->
+                    <br><button type="button" id="add" class="btn btn-light custom">Add</button>
+                    <button type="button" id="delete" onclick="deleterow()" class="btn btn-light custom">Delete</button>
+                    <br><br><b>Remarks:</b>&nbsp;<textarea name="remarks" id="textbox">
+                        </textarea><br><br>
+                    <input type="reset" id="reset" class="btn btn-dark custom" value="Reset">
+                    <input type="submit" id="submit" class="btn btn-dark custom" value="Submit">
+                  </form>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div><!-- End .content-->
+        </div>
+      </div>
+
+      </div>
+    </section><!-- End Why Us Section -->
+
+
+    <!-- Vendor JS Files -->
+    <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+    <!-- Template Main JS File -->
+
+</body>
+
+</html>
