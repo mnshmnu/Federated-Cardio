@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Federated Health</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{{ url_for('static', filename='css/login.css') }}" rel="stylesheet">
+        <script type=text/javascript src="{{ url_for('static', filename='js/login.js')}}"></script>
+
+    </head>
+    <body {% if error %} onload="document.getElementById('id01').style.display='block'" {% endif %}>
+        <!-- Button to open the modal login form -->
+        <div class="logindiv">
+            <h1 class="titleh1">FEDERATED HEALTH</h1>
+            <button class="login-btn" onclick="document.getElementById('id01').style.display='block'">LOGIN</button>
+        </div>
+        
+
+        <!-- The Modal -->
+        <div id="id01" class="modal">
+            <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+
+            <!-- Modal Content -->
+            <form class="modal-content animate" action="{{ url_for('login') }}" method="post">
+                <div class="imgcontainer">
+                    <img src="{{ url_for('static', filename='images/login/img_avatar2.png')}}" alt="Avatar" class="avatar">
+                </div>
+
+                <div class="container">
+                    <label for="uname"><b>Username</b></label>
+                    <input type="text" name="uname" placeholder="Enter Username" value="{{ userdetail[0] }}" name="uname" required>
+
+                    <label for="psw"><b>Password</b></label>
+                    <input type="password" name="upassword" placeholder="Enter Password" value="{{ userdetail[1] }}" required>
+                    <button type="submit">Login</button>
+                    <label>
+                        <input type="checkbox" checked="checked"> Remember me
+                    </label>
+                    {% if error %}
+                        <span>
+                            <p>{{ error }}</p>
+                        </span>
+                    {% endif %}
+                </div>
+
+                <div class="container" style="background-color:#f1f1f1">
+                    <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+                    <span class="psw">Forgot <a href="#">password?</a></span>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

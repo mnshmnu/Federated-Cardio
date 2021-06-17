@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Patient details</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet">
+        <script type=text/javascript src="{{ url_for('static', filename='js/home.js')}}"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <body>
+        <header>
+            <div class="topnav" id="myTopnav">
+                <a href=""  class="active">Federated Health</a>
+                <a href="{{ url_for('home') }}" style="float:right;margin-right: 20px;">Go Back</a>
+                <a href="" style="float:right;"><i class="fa fa-user" style="margin-right: 10px"></i>{{ session['uname'] }}</a>
+                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                  <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </header>
+        <div class="container">
+
+            <div class="col-100">
+                <h1> Patient Details </h1>
+            </div>
+
+            <form action="{{ url_for('updateremark') }}" method="post">
+                <div class="row">
+                    <div class="col-25">
+                        <label for="pid">Patient ID</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" id="pid" value="{{ pdetails['pid'] }}" name="pid" readonly>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Patient Name</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" id="name" value="{{ pdetails['name'] }}" disabled>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="age">Age</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="number" id="age" value="{{ pdetails['age'] }}" disabled>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="condition">Condition</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" id="condition" value="{{ pdetails['condition'] }}" disabled>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="cpercentage">Percentage</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="number" id="cpercentage" value="{{ pdetails['cpercentage'] }}" disabled>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                      <label for="remark">Remark</label>
+                    </div>
+                    <div class="col-75">
+                      <textarea id="remark" name="remark" style="height:100px">{{ remarks }}</textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <input type="submit" value="Update Remarks">
+                </div>
+            </form>
+
+            <div class="col-100">
+                <h1> ADD Medication </h1>
+            </div>
+
+
+            <form action="{{ url_for('addmedication') }}" method="post">
+                <input value="{{ pdetails['pid'] }}" name="pid" hidden>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="mname">Medicine name</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" id="mname" name="mname">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="amount">Amount(mg)</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="number" id="amount" name="amount">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="dpd">Dose Per day (nos)</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="number" id="dpd" name="dpd">
+                    </div>
+                    <div class="row">
+                        <input type="submit" value=" Add Medication ">
+                    </div>
+                </div>
+            </form>
+
+            <div class="col-100">
+                <h1> Medications </h1>
+            </div>
+
+            {% if mlist %}
+
+            <div style="overflow-x:auto;">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Amount</th>
+                        <th>Dose Per Day</th>
+                        <th width="10%">View</th>
+                    </tr>
+                    {% for medication in mlist %}
+                    <tr>
+                        <td>{{ medication[0] }}</td>
+                        <td>{{ medication[1] }}</td>
+                        <td>{{ medication[2] }}</td>
+                        <td>
+                            <div class="row">
+                                <a href="{{ url_for('deletemed', pid=pdetails['pid'], name=medication[0], amount=medication[1] , dpd=medication[2]) }}"><button type="button"> Delete </button></a>
+                            </div> 
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% else %}
+
+            <p>No records found...!</p>
+
+            {% endif %}
+
+        </div>
+          
+    </body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>HOME</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet">
+        <script type=text/javascript src="{{ url_for('static', filename='js/home.js')}}"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <body>
+        <header>
+            <div class="topnav" id="myTopnav">
+                <a href=""  class="active">Federated Health</a>
+                <a href="{{ url_for('logout') }}" style="float:right;margin-right: 20px;">Logout</a>
+                <a href="" style="float:right;"><i class="fa fa-user" style="margin-right: 10px"></i>{{ session['uname'] }}</a>
+                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                  <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </header>
+        <div class="container">
+
+            <div class="col-100">
+                <h1> Add Patient </h1>
+            </div>
+
+            <form action="{{ url_for('addpatient') }}" method="post">
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Name</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" id="name" name="name" placeholder="NAME" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="age">Age</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="number" id="age" name="age" placeholder="AGE" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="gender">Gender</label>
+                    </div>
+                    <div class="col-75">
+                        <select id="gender" name="gender" required>
+                            <option value="" selected>Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="Audio">Audio Recording</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="file" id="Audio" accept=".wav" name="Audio" required>
+                    </div>
+                </div>
+              <div class="row">
+                <input type="submit" value="Submit">
+              </div>
+            </form>
+        </div>
+
+
+        <div class="container">
+
+            <div class="col-100">
+                <h1> Patient List </h1>
+            </div>
+
+            {% if plist %}
+
+            <div style="overflow-x:auto;">
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Gender</th>
+                        <th>Condition</th>
+                        <th width="10%">View</th>
+                    </tr>
+                    {% for patient in plist %}
+                    <tr>
+                        <td>{{ patient[0] }}</td>
+                        <td>{{ patient[1] }}</td>
+                        <td>{{ patient[2] }}</td>
+                        <td>{{ patient[3] }}</td>
+                        <td>{{ patient[4] }}</td>
+                        <td>
+                            <div class="row">
+                                <a href="{{ url_for('viewpid', pid=patient[0]) }}"><button class="view" type="button"> View </button></a>
+                                <a href="{{ url_for('deletepid', pid=patient[0]) }}"><button type="button"> Delete </button></a>
+                            </div> 
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% else %}
+
+            <p>No records found...!</p>
+
+            {% endif %}
+
+        </div>
+          
+    </body>
+</html>
